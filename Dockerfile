@@ -30,7 +30,8 @@ RUN bundle install && \
 
 # Copy application code
 COPY . .
-
+# Remove server.pid if it exists
+RUN rm -f tmp/pids/server.pid
 # Precompile bootsnap code for faster boot times
 RUN bundle exec bootsnap precompile app/ lib/
 
@@ -42,8 +43,7 @@ RUN chmod +x bin/* && \
 # Precompiling assets for production without requiring secret RAILS_MASTER_KEY
 RUN SECRET_KEY_BASE_DUMMY=1 ./bin/rails assets:precompile
 
-# Remove server.pid if it exists
-RUN [ -f tmp/pids/server.pid ] && rm -f tmp/pids/server.pid || true
+
 # Final stage for app image
 FROM base
 
@@ -66,8 +66,8 @@ ENTRYPOINT ["/rails/bin/docker-entrypoint"]
 
 # Start the server by default, this can be overwritten at runtime
 EXPOSE 3000
- CMD ["./bin/rails", "server"]
-
+#  CMD ["./bin/rails", "server"]
+CMD ["sh", "-c", "bundle exec rails server -b 0.0.0.0 -p 3000"]
 # CMD ["sh", "-c", "rm -f tmp/pids/server.pid && bundle exec rails server -b 0.0.0.0 -p 3000" , "./bin/rails", "server"]
 
 
