@@ -21,18 +21,7 @@ FROM base as build
 RUN apt-get update -qq && \
     apt-get install --no-install-recommends -y build-essential git libvips pkg-config
 
-# Install wget
-RUN apt-get install -y wget
 
-
-# Install dockerize
-ENV DOCKERIZE_VERSION v0.6.1
-RUN wget https://github.com/jwilder/dockerize/releases/download/${DOCKERIZE_VERSION}/dockerize-linux-amd64-${DOCKERIZE_VERSION}.tar.gz \
-    && tar -C /usr/local/bin -xzvf dockerize-linux-amd64-${DOCKERIZE_VERSION}.tar.gz \
-    && rm dockerize-linux-amd64-${DOCKERIZE_VERSION}.tar.gz
-
-# Add dockerize to PATH
-ENV PATH="/usr/local/bin:${PATH}"
 # Install application gems
 COPY Gemfile Gemfile.lock ./
 RUN bundle install && \
@@ -77,7 +66,7 @@ ENTRYPOINT ["/rails/bin/docker-entrypoint"]
 
 # Start the server by default, this can be overwritten at runtime
 EXPOSE 3000
-#  CMD ["./bin/rails", "server"]
-CMD ["dockerize", "-wait", "tcp://db:5432", "./bin/rails", "server"]
+ CMD ["./bin/rails", "server"]
+
 
 #f
