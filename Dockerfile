@@ -42,7 +42,7 @@ RUN chmod +x bin/* && \
 RUN SECRET_KEY_BASE_DUMMY=1 ./bin/rails assets:precompile
 
 # Remove server.pid if it exists
-RUN [ -f tmp/pids/server.pid ] && rm -f tmp/pids/server.pid || true
+RUN rm -f tmp/pids/server.pid
 # Final stage for app image
 FROM base
 
@@ -65,6 +65,6 @@ ENTRYPOINT ["/rails/bin/docker-entrypoint"]
 
 # Start the server by default, this can be overwritten at runtime
 EXPOSE 3000
-CMD ["./bin/rails", "server"]
-
+# CMD ["./bin/rails", "server"]
+CMD ["sh", "-c", "rm -f tmp/pids/server.pid && bundle exec rails server"]
 #f
