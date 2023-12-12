@@ -23,13 +23,11 @@ RUN apt-get update -qq && \
 
 # Install wget
 RUN apt-get install -y wget
-ENV DOCKERIZE_VERSION v0.6.1
-RUN wget https://github.com/jwilder/dockerize/releases/download/${DOCKERIZE_VERSION}/dockerize-linux-amd64-${DOCKERIZE_VERSION}.tar.gz \
-    && tar -C /usr/local/bin -xzvf dockerize-linux-amd64-${DOCKERIZE_VERSION}.tar.gz \
-    && rm dockerize-linux-amd64-${DOCKERIZE_VERSION}.tar.gz
+# Download wait-for-it.sh
+RUN wget https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-for-it.sh -O /usr/local/bin/wait-for-it.sh
 
-# Add dockerize to PATH
-ENV PATH="/usr/local/bin:${PATH}"
+# Make it executable
+RUN chmod +x /usr/local/bin/wait-for-it.sh
 # Install application gems
 COPY Gemfile Gemfile.lock ./
 RUN bundle install && \
@@ -75,6 +73,6 @@ ENTRYPOINT ["/rails/bin/docker-entrypoint"]
 # Start the server by default, this can be overwritten at runtime
 EXPOSE 3000
 #  CMD ["./bin/rails", "server"]
-CMD ["dockerize", "-wait", "tcp://db:5432", "bundle", "exec", "rails", "server"]
+CMD ["./bin/wait-for-it.sh", "db:5432", "--", "./bin/rails", "server"]
 
 #f
