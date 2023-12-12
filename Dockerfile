@@ -20,7 +20,11 @@ FROM base as build
 # Install packages needed to build gems
 RUN apt-get update -qq && \
     apt-get install --no-install-recommends -y build-essential git libvips pkg-config
-
+# Install dockerize
+ENV DOCKERIZE_VERSION v0.6.1
+RUN wget https://github.com/jwilder/dockerize/releases/download/${DOCKERIZE_VERSION}/dockerize-linux-amd64-${DOCKERIZE_VERSION}.tar.gz \
+    && tar -C /usr/local/bin -xzvf dockerize-linux-amd64-${DOCKERIZE_VERSION}.tar.gz \
+    && rm dockerize-linux-amd64-${DOCKERIZE_VERSION}.tar.gz
 # Install application gems
 COPY Gemfile Gemfile.lock ./
 RUN bundle install && \
@@ -42,7 +46,7 @@ RUN chmod +x bin/* && \
 RUN SECRET_KEY_BASE_DUMMY=1 ./bin/rails assets:precompile
 
 # Remove server.pid if it exists
-RUN rm -f tmp/pids/server.pid
+RUN [ -f tmp/pids/server.pid ] && rm -f tmp/pids/server.pid || true
 # Final stage for app image
 FROM base
 
@@ -65,6 +69,7 @@ ENTRYPOINT ["/rails/bin/docker-entrypoint"]
 
 # Start the server by default, this can be overwritten at runtime
 EXPOSE 3000
-# CMD ["./bin/rails", "server"]
-CMD ["sh", "-c", "rm -f tmp/pids/server.pid && bundle exec rails server"]
+#  CMD ["./bin/rails", "server"]
+CMD ["dockerize", "-wait", "tcp://db:5432", "bundle", "exec", "rails", "server"]
+
 #f
