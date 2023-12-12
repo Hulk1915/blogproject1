@@ -65,6 +65,6 @@ ENTRYPOINT ["/rails/bin/docker-entrypoint"]
 
 # Start the server by default, this can be overwritten at runtime
 EXPOSE 3000
-# CMD ["./bin/rails", "server"]
-CMD ["sh", "-c", "sleep 10 && bundle exec rails server"]
+CMD ["./bin/rails", "server"]
+
 #f
