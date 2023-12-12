@@ -30,7 +30,7 @@ RUN bundle install && \
 # Copy application code
 COPY . .
 # Copy master.key for assets:precompile
-COPY config/master.key config/
+COPY ./config/master.key config/
 # Precompile bootsnap code for faster boot times
 RUN bundle exec bootsnap precompile app/ lib/
 
