@@ -68,7 +68,8 @@ ENTRYPOINT ["/rails/bin/docker-entrypoint"]
 EXPOSE 3000
 #  CMD ["./bin/rails", "server"]
 
-CMD ["sh", "-c", "rm -f tmp/pids/server.pid && bundle exec rails server -b 0.0.0.0 -p 3000 -P tmp/pids/server.pid"]
+CMD ["sh", "-c", "rm -f tmp/pids/server.pid && exec bundle exec puma -b tcp://0.0.0.0:3000 -e production -w 2"]
+
 
 
 #f
