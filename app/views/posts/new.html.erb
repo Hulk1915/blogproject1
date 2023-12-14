@@ -2,7 +2,7 @@
 
 
 <%= form_for @post, url: posts_path do |f| %>
-  <% if @post.errors.any? %>
+  <% if f.object.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@post.errors.count, "error") %> prohibited this post from being saved:</h2>
       <ul>
