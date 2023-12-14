@@ -29,7 +29,7 @@ class PostsController < ApplicationController
     if @post.update(post_params)
       redirect_to @post, notice: 'Post was successfully updated.'
     else
-      @errors = @post.errors.full_messages
+
       render 'new'
     end
   end
@@ -49,7 +49,7 @@ class PostsController < ApplicationController
     if (@post.save)
       redirect_to @post
     else
-      @errors = @post.errors.full_messages
+
       render 'new'
     end
 
