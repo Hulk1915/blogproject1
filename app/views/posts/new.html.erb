@@ -3,7 +3,7 @@
 
 <%= form_for @post, url: posts_path do |f| %>
   <% if @post.errors.any? %>
-    <div id="error_explanation">
+    <div id="error_explanation" class="alert alert-danger">
       <h2><%= pluralize(@post.errors.count, "error") %> prohibited this post from being saved:</h2>
       <ul>
         <% @post.errors.full_messages.each do |message| %>
@@ -12,6 +12,7 @@
       </ul>
     </div>
   <% end %>
+  
 
 <p>
     Название<br>
