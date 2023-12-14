@@ -1,19 +1,16 @@
 <h2>Добавление нового поста</h2>
-<% if @post.errors.any? %>
-  <div id="error_explanation">
-    <h2><%= pluralize(@post.errors.count, "error") %> prohibited this post from being saved:</h2>
-    <ul>
-      <% @post.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
-    </ul>
-  </div>
-<% end %>
+
 
 <%=form_for :post, url: posts_path do |f| %>
 <% if @post.errors.any?%>
    <% @post.errors.full_messages.each do |msg|%>
-    <div class='alert alert-danger'><%=msg%></div>
+   <div class='alert alert-danger'>
+      <% if msg.include?("is too short (minimum is 5 characters)") %>
+        Заголовок должен содержать минимум 5 символов.
+      <% else %>
+        <%= msg %>
+      <% end %>
+    </div>
    <% end %>
 <% end %>
 
