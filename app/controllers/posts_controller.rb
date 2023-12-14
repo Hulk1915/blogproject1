@@ -41,19 +41,34 @@ class PostsController < ApplicationController
   end
 
 
-  def create
-    # render plain: params[:post].inspect
+  # def create
+  #   # render plain: params[:post].inspect
 
+  #   @post = Post.new(post_params)
+
+  #   if (@post.save)
+  #     redirect_to @post
+  #   else
+
+  #     render 'new'
+  #   end
+
+  # end
+
+  def create
     @post = Post.new(post_params)
 
-    if (@post.save)
-      redirect_to @post
-    else
-
-      render 'new'
+    respond_to do |format|
+      if @post.save
+        format.html { redirect_to @post }
+        format.json { render json: { success: true, redirect: post_path(@post) } }
+      else
+        format.html { render 'new' }
+        format.json { render json: { success: false, errors: @post.errors.full_messages }, status: :unprocessable_entity }
+      end
     end
-
   end
+
 
   private def post_params
   params.require(:post).permit(:title, :body)
