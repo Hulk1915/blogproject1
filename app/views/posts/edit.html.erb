@@ -1,17 +1,12 @@
 <h2>Редактирование поста</h2>
 
 
-<%= form_for @post, url: posts_path do |f| %>
-  <% if @post.errors.any? %>
-    <div id="error_explanation" class="alert alert-danger">
-      <h2><%= pluralize(@post.errors.count, "error") %> prohibited this post from being saved:</h2>
-      <ul>
-        <% @post.errors.full_messages.each do |message| %>
-          <li><%= message %></li>
-        <% end %>
-      </ul>
-    </div>
-  <% end %>
+<%= form_for @post, url: post_path(@post), method: :patch do |f| %>
+<% if @post.errors.any?%>
+   <% @post.errors.full_messages.each do |msg|%>
+    <div class='alert alert-danger'><%=msg%></div>
+   <% end %>
+<% end %>
 
 <p>
     Название<br>
@@ -27,7 +22,7 @@
 
 <p>
    
-    <%=f.submit ("Изменить пост", class: 'btn btn-success') %>
+    <%=f.submit ({:class =>'btn btn-success'}) %>
 
 </p>
 <% end %>
