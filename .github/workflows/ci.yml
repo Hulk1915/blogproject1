@@ -42,7 +42,7 @@ jobs:
         bundle install
 
     - name: Ensure all bin files are executable
-      run: chmod +x bin/*
+       run: chmod +x bin/*
 
     - name: Setup database
       run: |
@@ -54,6 +54,5 @@ jobs:
 
     - name: Run database migrations
       run: bundle exec rails db:migrate
-
     - name: Run tests
-      run: bin/rails test
+      run: bundle exec rails test
