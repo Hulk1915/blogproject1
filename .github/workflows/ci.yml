@@ -41,8 +41,8 @@ jobs:
         gem install bundler
         bundle install
 
-    - name: Ensure bin/rails is executable
-      run: chmod +x bin/rails
+    - name: Ensure all bin files are executable
+      run: chmod +x bin/*
 
     - name: Setup database
       run: |
