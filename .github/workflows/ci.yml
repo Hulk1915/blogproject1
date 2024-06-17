@@ -39,24 +39,23 @@ jobs:
     - name: Install dependencies
       run: |
         gem install bundler
-        bundle install
+        bundle install --jobs 4 --retry 3
 
     - name: Ensure all bin files are executable
       run: chmod +x bin/*
 
-    - name: Setup database
+    - name: Setup database for SQLite
       run: |
-        # Установка клиента PostgreSQL не требуется для SQLite
-        # Для SQLite убедимся, что база данных создана
-        mkdir -p tmp/db
-        touch tmp/db/test.sqlite3
+        # Создание директории и файла SQLite базы данных
+        mkdir -p db
+        touch db/test.sqlite3
 
     - name: Run database migrations
       run: |
-        # Для SQLite миграции базы данных не требуют дополнительной настройки
-        bin/rails db:migrate
+        # Миграция базы данных SQLite
+        bundle exec rails db:migrate
 
     - name: Run tests
       run: |
         # Запуск тестов Ruby on Rails
-        bin/rails test
+        bundle exec rails test
