@@ -42,17 +42,21 @@ jobs:
         bundle install
 
     - name: Ensure all bin files are executable
-       run: chmod +x bin/*
+      run: chmod +x bin/*
 
     - name: Setup database
       run: |
-        sudo apt-get install -y postgresql-client
-        psql -h localhost -U postgres -c "DROP DATABASE IF EXISTS mydb;"
-        psql -h localhost -U postgres -c "CREATE DATABASE mydb;"
-      env:
-        PGPASSWORD: password
+        # Установка клиента PostgreSQL не требуется для SQLite
+        # Для SQLite убедимся, что база данных создана
+        mkdir -p tmp/db
+        touch tmp/db/test.sqlite3
 
     - name: Run database migrations
-      run: bundle exec rails db:migrate
+      run: |
+        # Для SQLite миграции базы данных не требуют дополнительной настройки
+        bin/rails db:migrate
+
     - name: Run tests
-      run: bundle exec rails test
+      run: |
+        # Запуск тестов Ruby on Rails
+        bin/rails test
