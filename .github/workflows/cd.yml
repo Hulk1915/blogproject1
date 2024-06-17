@@ -1,39 +1,39 @@
-name: CD Pipeline
+# name: CD Pipeline
 
-on:
-  push:
-    branches:
-      - master
+# on:
+#   push:
+#     branches:
+#       - master
 
-jobs:
-  deploy:
-    runs-on: ubuntu-latest
+# jobs:
+#   deploy:
+#     runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+#     steps:
+#       - name: Checkout code
+#         uses: actions/checkout@v2
 
-      - name: Set up Ruby
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: '3.2.2'
+#       - name: Set up Ruby
+#         uses: ruby/setup-ruby@v1
+#         with:
+#           ruby-version: '3.2.2'
 
-      - name: Install Bundler
-        run: gem install bundler
+#       - name: Install Bundler
+#         run: gem install bundler
 
-      - name: Install dependencies
-        run: bundle install --jobs 4 --retry 3
+#       - name: Install dependencies
+#         run: bundle install --jobs 4 --retry 3
 
-      - name: Ensure all bin files are executable
-        run: chmod +x bin/*
+#       - name: Ensure all bin files are executable
+#         run: chmod +x bin/*
 
-      - name: Setup database for PostgreSQL
-        run: bundle exec rails db:setup RAILS_ENV=production
+#       - name: Setup database for PostgreSQL
+#         run: bundle exec rails db:setup RAILS_ENV=production
 
-      - name: Install Railway CLI
-        run: npm i -g @railway/cli
+#       - name: Install Railway CLI
+#         run: npm i -g @railway/cli
 
-      - name: Deploy
-        run: railway up --service blogproject1
-        env:
-          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+#       - name: Deploy
+#         run: railway up --service blogproject1
+#         env:
+#           RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
