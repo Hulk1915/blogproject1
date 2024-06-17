@@ -52,7 +52,7 @@
 
 #     - name: Check and migrate database
 #       run: |
-#         # Проверка и выполнение миграций базы данных SQLite
+#         # Проверка и выполнение миграций базы данныхx SQLite
 #         bundle exec rails db:migrate RAILS_ENV=test
 
 #     - name: Run tests
