@@ -35,7 +35,7 @@ jobs:
         RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
       run: |
         # Установка Railway CLI
-        curl -sSL https://cli.railway.app/install.sh | sh
+        curl -sSL https://cli.railway.app/install.sh | bash
         # Логин в Railway
         railway login --token $RAILWAY_TOKEN
         # Развертывание приложения на Railway
