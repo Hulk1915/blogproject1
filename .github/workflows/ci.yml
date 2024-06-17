@@ -53,9 +53,9 @@ jobs:
     - name: Check pending migrations
       run: |
         # Проверка наличия невыполненных миграций
-        bundle exec rails db:version || bundle exec rails db:migrate
+        RAILS_ENV=test bundle exec rails db:version || RAILS_ENV=test bundle exec rails db:migrate
 
     - name: Run tests
       run: |
         # Запуск тестов Ruby on Rails
-        bundle exec rails test
+        RAILS_ENV=test bundle exec rails test
