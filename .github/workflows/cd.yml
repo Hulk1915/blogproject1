@@ -30,9 +30,19 @@ jobs:
     - name: Setup database for PostgreSQL
       run: bundle exec rails db:setup RAILS_ENV=production
 
+      - name: Debug Script
+        env:
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+        run: |
+          set -x  # Включить вывод команд для отладки
+          curl -sSL https://cli.railway.app/install.sh | bash -s
+          echo "RAILWAY_TOKEN is $RAILWAY_TOKEN"
+          railway --version  # Проверить доступность команды railway
+
     - name: Install Railway CLI
       run: |
-        curl -sSL https://cli.railway.app/install.sh | bash -s
+        curl -sSL https://cli.railway.app/install.sh | /bin/bash -s
+
 
     - name: Railway login and deploy
       env:
