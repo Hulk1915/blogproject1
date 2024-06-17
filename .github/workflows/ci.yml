@@ -34,12 +34,12 @@ jobs:
     - name: Set up Ruby
       uses: ruby/setup-ruby@v1
       with:
-        ruby-version: '2.7'
+        ruby-version: '3.2.2'
 
     - name: Install dependencies
       run: |
-        gem install bundler -v 2.4.22
-        bundle _2.4.22_ install
+        gem install bundler
+        bundle install
 
     - name: Setup database
       run: |
