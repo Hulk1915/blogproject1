@@ -49,7 +49,7 @@ jobs:
       env:
         PGPASSWORD: password
 
-   - name: Run database migrations
+    - name: Run database migrations
       run: bin/rails db:migrate
 
     - name: Run tests
