@@ -44,6 +44,7 @@ jobs:
     - name: Setup database
       run: |
         sudo apt-get install -y postgresql-client
+        psql -h localhost -U postgres -c "DROP DATABASE IF EXISTS mydb;"
         psql -h localhost -U postgres -c "CREATE DATABASE mydb;"
       env:
         PGPASSWORD: password
