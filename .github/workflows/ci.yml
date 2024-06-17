@@ -53,7 +53,7 @@ jobs:
         PGPASSWORD: password
 
     - name: Run database migrations
-      run: bin/rails db:migrate
+      run: bundle exec rails db:migrate
 
     - name: Run tests
       run: bin/rails test
