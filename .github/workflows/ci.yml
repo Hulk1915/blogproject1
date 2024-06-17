@@ -9,7 +9,7 @@ on:
       - master
 
 jobs:
-  build:
+  build-and-test:
     runs-on: ubuntu-latest
 
     services:
@@ -28,43 +28,34 @@ jobs:
           --health-retries=5
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+    - name: Checkout code
+      uses: actions/checkout@v2
 
-      - name: Setup database for SQLite
-        run: |
-          # Создание директории и файла SQLite базы данных
-          mkdir -p db
-          touch db/test.sqlite3
+    - name: Set up Ruby
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: '3.2.2'
 
-      - name: Check and migrate database
-        run: |
-          # Проверка и выполнение миграций базы данных SQLite
-          bundle install --jobs 4 --retry 3
-          bundle exec rails db:migrate RAILS_ENV=test
+    - name: Install dependencies
+      run: |
+        gem install bundler
+        bundle install --jobs 4 --retry 3
 
-  run-tests:
-    needs: setup-database
-    runs-on: ubuntu-latest
+    - name: Ensure all bin files are executable
+      run: chmod +x bin/*
 
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+    - name: Setup database for SQLite
+      run: |
+        # Создание директории и файла SQLite базы данных
+        mkdir -p db
+        touch db/test.sqlite3
 
-      - name: Set up Ruby
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: '3.2.2'
+    - name: Check and migrate database
+      run: |
+        # Проверка и выполнение миграций базы данных SQLite
+        bundle exec rails db:migrate RAILS_ENV=test
 
-      - name: Install dependencies
-        run: |
-          gem install bundler
-          bundle install --jobs 4 --retry 3
-
-      - name: Ensure all bin files are executable
-        run: chmod +x bin/*
-
-      - name: Run tests
-        run: |
-          # Запуск тестов Ruby on Rails
-          bundle exec rails test RAILS_ENV=test
+    - name: Run tests
+      run: |
+        # Запуск тестовf Ruby on Rails
+        bundle exec rails test RAILS_ENV=test
