@@ -1,0 +1,42 @@
+name: CD Pipeline
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Ruby
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: '3.2.2'
+
+    - name: Install dependencies
+      run: |
+        gem install bundler
+        bundle install --jobs 4 --retry 3
+
+    - name: Ensure all bin files are executable
+      run: chmod +x bin/*
+
+    - name: Setup database for PostgreSQL
+      run: |
+        bundle exec rails db:setup RAILS_ENV=production
+
+    - name: Build and Deploy to Railway
+      env:
+        RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+      run: |
+        # Установка Railway CLI
+        curl -sSL https://cli.railway.app/install.sh | sh
+        # Логин в Railway
+        railway login --token $RAILWAY_TOKEN
+        # Развертывание приложения на Railway
+        railway up
