@@ -57,5 +57,5 @@ jobs:
 
     - name: Run tests
       run: |
-        # Запуск тестов Ruby on Rails
+        # Запуск тестовf Ruby on Rails
         bundle exec rails test RAILS_ENV=test
