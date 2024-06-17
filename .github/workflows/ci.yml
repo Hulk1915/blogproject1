@@ -50,12 +50,12 @@ jobs:
         mkdir -p db
         touch db/test.sqlite3
 
-    - name: Check pending migrations
+    - name: Check and migrate database
       run: |
-        # Проверка наличия невыполненных миграций
-        RAILS_ENV=test bundle exec rails db:version || RAILS_ENV=test bundle exec rails db:migrate
+        # Проверка и выполнение миграций базы данных SQLite
+        bundle exec rails db:migrate RAILS_ENV=test
 
     - name: Run tests
       run: |
         # Запуск тестов Ruby on Rails
-        RAILS_ENV=test bundle exec rails test
+        bundle exec rails test RAILS_ENV=test
