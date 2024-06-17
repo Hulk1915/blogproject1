@@ -41,6 +41,9 @@ jobs:
         gem install bundler
         bundle install
 
+    - name: Ensure bin/rails is executable
+      run: chmod +x bin/rails
+
     - name: Setup database
       run: |
         sudo apt-get install -y postgresql-client
