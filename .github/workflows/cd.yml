@@ -18,25 +18,25 @@ jobs:
       with:
         ruby-version: '3.2.2'
 
+    - name: Install Bundler
+      run: gem install bundler
+
     - name: Install dependencies
-      run: |
-        gem install bundler
-        bundle install --jobs 4 --retry 3
+      run: bundle install --jobs 4 --retry 3
 
     - name: Ensure all bin files are executable
       run: chmod +x bin/*
 
     - name: Setup database for PostgreSQL
-      run: |
-        bundle exec rails db:setup RAILS_ENV=production
+      run: bundle exec rails db:setup RAILS_ENV=production
 
-    - name: Build and Deploy to Railway
+    - name: Install Railway CLI
+      run: |
+        curl -sSL https://cli.railway.app/install.sh | bash
+
+    - name: Railway login and deploy
       env:
         RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
       run: |
-        # Установка Railway CLI
-        curl -sSL https://cli.railway.app/install.sh | bash
-        # Логин в Railway
         railway login --token $RAILWAY_TOKEN
-        # Развертывание приложения на Railway
         railway up
