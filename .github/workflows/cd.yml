@@ -32,7 +32,7 @@ jobs:
 
     - name: Install Railway CLI
       run: |
-        curl -sSL https://cli.railway.app/install.sh | bash
+        curl -sSL https://cli.railway.app/install.sh | bash -s
 
     - name: Railway login and deploy
       env:
